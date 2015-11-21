@@ -10,7 +10,7 @@
 		<server>
 			<!--<ip>localhost</ip>-->
 			<!-- <ip>none</ip> -->
-			<ip>wordpress.its.se</ip>
+			<ip>localhost</ip>
 			<!--ip></ip-->
 			<socketport>9999</socketport>
 		</server>

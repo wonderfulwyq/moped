@@ -250,7 +250,7 @@ uint32_t McuE_GetSystemClock(void)
  */
 uint32_t McuE_GetPeripheralClock(McuE_PeriperalClock_t type)
 {
-	return 20000000;
+	return 16000000;
 }
 
 /**

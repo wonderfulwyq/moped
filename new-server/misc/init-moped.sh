@@ -15,9 +15,9 @@ SQL="mysql -uroot -proot"
 
 USERDUMP=~/moped/wp_users.dump
 
-USERID=33
+USERID=1
 
-if true; then
+if false; then
     $SQL <<EOF
     drop database fresta2;
 EOF

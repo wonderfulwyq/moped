@@ -14,10 +14,10 @@
 SQL="mysql -uroot -proot"
 
 USERDUMP=~/moped/wp_users.dump
-
+VIN=20UYA31581L000002
 USERID=1
 
-if false; then
+if true; then
     $SQL <<EOF
     drop database fresta2;
 EOF
@@ -50,16 +50,18 @@ x=base64.b64encode(readfile("../../simulator/configs/system1.xml"))
 x = s.addVehicleConfig("MOPED", x)
 print x
 
-x = s.addVehicle("minMOPED", "20UYA31581L000000", "MOPED")
+x = s.addVehicle("minMOPED","$VIN", "MOPED")
 print x
 
-x = s.addUserVehicleAssociation($USERID, "20UYA31581L000000", True)
+x = s.addUserVehicleAssociation($USERID, "$VIN", True)
 print x
 
-app = testmoped.uploadplus(s, "DistPub", "1.0")
+#app = testmoped.uploadplus(s, "SemiAutomaticReverseParking", "1.0")
+app = testmoped.uploadplus(s, "PluginCreationTest2", "1.10")
+#app = testmoped.uploadplus(s, "PluginCreationTest3", "1.0")
 print app
 
-x = s.installApp("20UYA31581L000000", app)
+x = s.installApp("$VIN", app)
 print x
 
 

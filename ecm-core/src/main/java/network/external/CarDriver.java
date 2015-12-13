@@ -1,9 +1,12 @@
 package network.external;
 
 import java.io.IOException;
+import java.io.BufferedInputStream;
 import java.io.InputStream;
+import java.io.FileInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Properties;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -99,9 +102,15 @@ public class CarDriver implements Runnable {
 		public void run() {
 			/* We only want to read the last 11 bytes from the input stream (5 for each bar + EOF) */
 			byte[] incomingBytes = new byte[11];
-			
+			InputStream sem = null;
+			Properties prop;
 			try {
 				while (true) {
+					sem = new BufferedInputStream(new FileInputStream("lock")); //open file
+					prop.load(sem);	//load to Properties
+					sem.close();	//close so braking function can write 0 again
+					if (prop.getProperty("brake").equals("1")) //if its braking
+							Thread.sleep(10000);	//sleep 10 seconds
 					int nrIncomingBytes = in.available();
 					if (nrIncomingBytes > 0) {
 						/* Skip all bytes except those that represent the last speed&steer command */
@@ -114,11 +123,13 @@ public class CarDriver implements Runnable {
 						ecm.process(pwmMessage);
 					}
 
-					Thread.sleep(10);
 				}
+			} catch (IOException ioe) {
+				System.out.println("Failed checking semaphore...\n" + ioe.getMessage());
 			} catch (Exception e) {
 				System.out.println("Connection between cellphone and ECM was terminated");
 			}
 		}
 	}	
 }
+
